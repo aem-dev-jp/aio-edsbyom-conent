@@ -51,6 +51,8 @@ PR をマージ
 ```
 content/
 ├── index.md              トップページ
+├── nav.md                グローバルナビゲーション（必須）
+├── footer.md             グローバルフッター（必須）
 ├── docs/
 │   └── example.md        ドキュメント例
 ├── .github/
@@ -60,6 +62,33 @@ content/
 │   └── branch-protection.md  ブランチ保護設定メモ
 └── .gitignore
 ```
+
+### nav.md / footer.md について
+
+AEM EDS では、すべてのページの nav と footer を **フラグメント** として `/nav.plain.html` / `/footer.plain.html` から読み込みます。
+
+- `nav.md` は **3 つのセクション**（`---` 区切り）で構成する
+
+```markdown
+# サイト名                ← Section 1: nav-brand（ロゴ・サイト名）
+
+---
+
+- [Home](/)             ← Section 2: nav-sections（ナビリンク）
+- [About](/about)
+
+---
+
+- [Search](#search)     ← Section 3: nav-tools（検索・ログイン等）
+
+| Metadata |
+| -------- |
+| Robots | noindex |
+```
+
+- `footer.md` はフッター表示用の Markdown で構成する
+- どちらも AIO パイプラインが通常の `.md` と同様に処理し、Admin Preview API に `/nav` / `/footer` パスで登録する
+- AEM CDN が `<main>` 内容を抽出して `.plain.html` バリアントを自動生成する
 
 ## Markdown 記法
 
@@ -108,6 +137,7 @@ CommonMark + GFM (GitHub Flavored Markdown) が利用できる。
 - **環境**: `stage` GitHub Environment
 - **変更ファイル検出**: `git merge-base origin/main HEAD` を基準に差分を取得
   - `HEAD~1..HEAD` ではなく merge-base を使うことで、複数コミットをまとめて push した場合も `.md` の変更を確実に捕捉できる
+  - **`README.md` は除外**: AEM EDS の Admin API は大文字を含むパス（`/README`）を受け付けないため、`grep -v README.md` で変更ファイルから除外している
 - **処理**:
   1. `eds/preview` ステータスを pending に設定
   2. 変更ファイル（`.md` / 画像等アセット）を JSON 配列に変換（`jq -sc` でコンパクト出力 ※GITHUB_OUTPUT 仕様要件）
