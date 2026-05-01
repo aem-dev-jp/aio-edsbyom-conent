@@ -10,6 +10,8 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     environment: production
+    permissions:
+      statuses: write
     steps:
       - name: Check preview status
         uses: actions/github-script@v7
