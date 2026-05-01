@@ -26,6 +26,7 @@ jobs:
           BASE=$(git merge-base origin/main HEAD)
           CHANGED=$(git diff --name-status $BASE HEAD -- \
             '*.md' '*.jpg' '*.jpeg' '*.png' '*.gif' '*.svg' '*.webp' '*.ico' | \
+            grep -v $'\t''README.md$' | \
             awk '{
               status = ($1=="M" ? "modified" : ($1=="A" ? "added" : "deleted"));
               print "{\"path\":\"" $2 "\",\"status\":\"" status "\"}"
