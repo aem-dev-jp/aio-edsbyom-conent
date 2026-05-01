@@ -4,10 +4,10 @@ AEM Edge Delivery Services BYOM パイプラインのコンテンツリポジト
 
 ## 役割
 
-- コンテンツ編集者が Markdown でコンテンツを管理するリポジトリ
+- コンテンツ編集者が Markdown でコンテンツを管理する
 - `stage` ブランチへの push でプレビューを自動実行する
 - `stage → main` の PR マージで公開を自動実行する
-- `eds-preview` ブランチに AIO が生成した HTML を格納する
+- `eds-preview` ブランチに AIO が生成した HTML とマニフェストを格納する
 - `eds-prod` ブランチに公開済み HTML のミラーを保持する
 
 ## ブランチ構成
@@ -16,32 +16,31 @@ AEM Edge Delivery Services BYOM パイプラインのコンテンツリポジト
 |---------|------|--------|
 | `main` | 公開済みソース (Markdown) | 編集者 (PR のみ) |
 | `stage` | プレビュー対象ソース (Markdown) | 編集者 |
-| `eds-preview` | AIO 生成 HTML + マニフェスト | AIO (自動) |
-| `eds-prod` | 公開済み HTML ミラー (監査用) | AIO (自動) |
+| `eds-preview` | AIO 生成 HTML + マニフェスト | AIO（自動） |
+| `eds-prod` | 公開済み HTML ミラー（監査用） | AIO（自動） |
 
 ## コンテンツ編集フロー
 
 ```
-feature/xxx ブランチ作成
-  │
-  ├─ Markdown 編集・コミット
+feature/xxx ブランチ作成（任意）
   │
   ▼
-stage へマージ
-  │  GitHub Actions が自動実行 (preview.yml)
+stage へ push（または直接 stage で編集）
+  │  preview.yml が自動起動
+  │  merge-base(origin/main, HEAD) からの差分で変更 .md を検出
   │  AIO が HTML 生成 → eds-preview へコミット
   │  AEM Admin Preview API 呼び出し
   │  eds/preview ステータスチェックが success になる
   │
   ▼
 stage → main へ PR 作成
-  │  eds/preview の成功が必須条件 (ブランチ保護)
-  │  1名以上のレビュー承認が必須条件
+  │  PR head SHA の eds/preview が success であることを確認
+  │  ブランチ保護の "bypass rules" は期待動作（後述）
   │
   ▼
-PR マージ (Squash merge 推奨)
-  │  GitHub Actions が自動実行 (publish.yml)
-  │  AIO がプレビューマニフェストから確認済み HTML を復元
+PR をマージ
+  │  publish.yml が自動起動
+  │  AIO がマニフェストから確認済み HTML を復元
   │  AEM Admin Preview → Publish API 呼び出し
   │  eds-prod へミラー
   │  eds/publish ステータスチェックが success になる
@@ -70,7 +69,7 @@ CommonMark + GFM (GitHub Flavored Markdown) が利用できる。
 
 ### EDS ブロック
 
-テーブル記法でブロックコンポーネントを定義する。1行目のヘッダーがブロック名になる。
+テーブル記法でブロックコンポーネントを定義する。1 行目のヘッダーがブロック名になる。
 
 ```markdown
 | Hero |
@@ -88,15 +87,7 @@ CommonMark + GFM (GitHub Flavored Markdown) が利用できる。
 
 ### セクション区切り
 
-`---` (水平線) でセクションを区切る。各セクションは `<div>` でラップされる。
-
-```markdown
-# セクション1のコンテンツ
-
----
-
-# セクション2のコンテンツ
-```
+`---`（水平線）でセクションを区切る。各セクションは `<div>` でラップされる。
 
 ### メタデータ
 
@@ -107,69 +98,31 @@ CommonMark + GFM (GitHub Flavored Markdown) が利用できる。
 | -------- |
 | Title | ページタイトル |
 | Description | ページの説明文 |
-| Template | テンプレート名 |
-```
-
-### サンプルページ
-
-```markdown
-# ページ見出し
-
-本文テキスト。
-
-| Hero |
-| ---- |
-| ヒーローコンテンツ |
-
----
-
-| Columns |
-| ------- | ----------- |
-| 左カラム | 右カラム |
-
----
-
-| Metadata |
-| -------- |
-| Title | ページタイトル |
-| Description | ページ説明 |
 ```
 
 ## GitHub Actions ワークフロー
 
 ### preview.yml
 
-- トリガー: `stage` ブランチへの push
-- 環境: `stage` GitHub Environment
-- 処理:
-  1. 変更ファイル (`.md` / 画像等アセット) を検出
-  2. `eds/preview` ステータスを pending に設定
+- **トリガー**: `stage` ブランチへの push、または `workflow_dispatch`
+- **環境**: `stage` GitHub Environment
+- **変更ファイル検出**: `git merge-base origin/main HEAD` を基準に差分を取得
+  - `HEAD~1..HEAD` ではなく merge-base を使うことで、複数コミットをまとめて push した場合も `.md` の変更を確実に捕捉できる
+- **処理**:
+  1. `eds/preview` ステータスを pending に設定
+  2. 変更ファイル（`.md` / 画像等アセット）を JSON 配列に変換（`jq -sc` でコンパクト出力 ※GITHUB_OUTPUT 仕様要件）
   3. AIO オーケストレーターへ HMAC 署名付き POST
-  4. 成功/失敗に応じて `eds/preview` ステータスを更新
+  4. 成功 / 失敗に応じて `eds/preview` ステータスを更新
 
 ### publish.yml
 
-- トリガー: `main` ブランチへの PR マージ
-- 環境: `production` GitHub Environment
-- 前提条件: PR の `eds/preview` ステータスが success であること
-- 処理:
-  1. PR の `eds/preview` ステータスを確認
-  2. AIO オーケストレーターへ HMAC 署名付き POST (publish モード)
-  3. 成功/失敗に応じて `eds/publish` ステータスを更新
-
-## ブランチ保護ルール
-
-### `stage` ブランチ
-
-- `eds/preview` ステータスチェック必須
-- マージ前に最新状態との同期必須
-
-### `main` ブランチ
-
-- PR 必須 (直接 push 不可)
-- レビュー承認 1名以上必須
-- `eds/preview` ステータスチェック必須
-- 保護設定のバイパス不可
+- **トリガー**: `main` ブランチへの PR マージ (`pull_request: types: [closed]`)
+- **環境**: `production` GitHub Environment
+- **前提条件**: PR の `eds/preview` ステータスが success であること
+- **処理**:
+  1. PR head SHA の `eds/preview` ステータスを確認（success でなければ fail）
+  2. AIO オーケストレーターへ HMAC 署名付き POST（publish モード）
+  3. 成功 / 失敗に応じて `eds/publish` ステータスを更新
 
 ## GitHub Environments
 
@@ -187,35 +140,46 @@ CommonMark + GFM (GitHub Flavored Markdown) が利用できる。
 | `AIO_ACTION_URL` | AIO オーケストレーター Web Action の URL |
 | `HMAC_SECRET` | AIO と共有する HMAC 署名シークレット |
 
-`production` 環境は `main` ブランチからのみデプロイ可能に制限されている。
+**重要**: `production` 環境の Deployment branches and tags は **"All branches"（制限なし）** に設定してください。
 
-## セットアップ手順 (新規リポジトリ)
-
-1. このリポジトリを fork またはテンプレートから作成する
-2. `stage` と `main` のブランチ保護ルールを設定する ([参照](.github/branch-protection.md))
-3. GitHub Environments (`stage`, `production`) を作成する
-4. 各 Environment に `AIO_ACTION_URL` と `HMAC_SECRET` を Secret として登録する
-5. AIO リポジトリをデプロイし、`AIO_ACTION_URL` を取得する
-6. `eds-preview` と `eds-prod` のオーファンブランチを作成する
+Publish ワークフローは `pull_request: closed` イベントで起動するため、GitHub がデプロイを評価する ref が `refs/pull/N/merge` になります。`main` ブランチのみを許可する custom policy では「not allowed to deploy」エラーになります。
 
 ```bash
-# eds-preview ブランチ作成
+# GitHub API で設定する場合
+gh api --method PUT repos/{owner}/{repo}/environments/production \
+  --field deployment_branch_policy=null
+```
+
+## ブランチ保護ルールの補足
+
+`eds/preview` / `eds/publish` ステータスは GitHub Actions の **Checks API ではなく Commit Statuses API**（`github.rest.repos.createCommitStatus`）で書き込まれています。そのため：
+
+- GitHub のブランチ保護 UI では `eds/preview` が「Required status check」として認識されず「bypass rules」の確認が表示されます
+- これは **仕様上の期待動作** です。Publish ワークフロー自体が独自に `eds/preview: success` を API で確認するため、セキュリティ上の問題はありません
+- PR マージ時に「Confirm bypass rules and merge」が表示されたら、そのままマージしてください
+
+## セットアップ手順（新規リポジトリ）
+
+1. このディレクトリを新しい GitHub リポジトリとして公開する
+2. `eds-preview` と `eds-prod` のオーファンブランチを作成する
+
+```bash
 git checkout --orphan eds-preview
 git rm -rf .
 mkdir -p .eds/runs
-echo '{"version":1,"pages":[]}' > .eds/manifest.json
+echo '{"pages":{},"lastUpdated":null}' > .eds/manifest.json
 git add .eds/manifest.json
 git commit -m "chore: initialize eds-preview branch"
 git push origin eds-preview
 
-# eds-prod ブランチ作成
 git checkout --orphan eds-prod
 git rm -rf .
-mkdir -p .eds/runs
-echo '{"version":1,"pages":[]}' > .eds/manifest.json
-git add .eds/manifest.json
-git commit -m "chore: initialize eds-prod branch"
+git commit --allow-empty -m "chore: initialize eds-prod branch"
 git push origin eds-prod
 
 git checkout main
 ```
+
+3. GitHub Environments（`stage`, `production`）を作成する
+4. 各 Environment に `AIO_ACTION_URL` と `HMAC_SECRET` を Secret として登録する
+5. `production` 環境の Deployment branches を "All branches" に設定する
