@@ -27,7 +27,7 @@ jobs:
             awk '{
               status = ($1=="M" ? "modified" : ($1=="A" ? "added" : "deleted"));
               print "{\"path\":\"" $2 "\",\"status\":\"" status "\"}"
-            }' | jq -s '.')
+            }' | jq -sc '.')
           echo "files=$CHANGED" >> $GITHUB_OUTPUT
 
       - name: Set preview status pending
