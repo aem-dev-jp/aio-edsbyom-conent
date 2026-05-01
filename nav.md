@@ -2,10 +2,6 @@
 
 ---
 
-- [Home](/)
-- [About](/about)
-- [Contact](/contact)
-
 ---
 
 - [Search](#search)
