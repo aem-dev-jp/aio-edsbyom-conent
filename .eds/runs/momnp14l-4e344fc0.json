@@ -1,0 +1,14 @@
+{
+  "runId": "momnp14l-4e344fc0",
+  "mode": "preview",
+  "status": "success",
+  "contentOwner": "aem-dev-jp",
+  "contentRepo": "aio-edsbyom-conent",
+  "sourceBranch": "stage",
+  "sourceCommit": "95b5f978f467ba34f1bbbb21fdd6dfe795b9967e",
+  "previewCommitSha": null,
+  "pages": [],
+  "startedAt": "2026-05-01T08:34:01.077Z",
+  "completedAt": "2026-05-01T08:34:01.395Z",
+  "pullRequest": null
+}
