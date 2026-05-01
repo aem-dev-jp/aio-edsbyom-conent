@@ -3,6 +3,7 @@ name: Preview
 on:
   push:
     branches: [stage]
+  workflow_dispatch:
 
 jobs:
   preview:
