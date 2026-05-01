@@ -17,12 +17,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
       - name: Get changed files
         id: changes
         run: |
-          CHANGED=$(git diff --name-status HEAD~1 HEAD -- \
+          git fetch origin main
+          BASE=$(git merge-base origin/main HEAD)
+          CHANGED=$(git diff --name-status $BASE HEAD -- \
             '*.md' '*.jpg' '*.jpeg' '*.png' '*.gif' '*.svg' '*.webp' '*.ico' | \
             awk '{
               status = ($1=="M" ? "modified" : ($1=="A" ? "added" : "deleted"));
