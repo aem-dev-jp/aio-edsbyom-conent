@@ -1,0 +1,129 @@
+{
+  "runId": "mon2bndy-8a5a75fc",
+  "mode": "publish",
+  "status": "success",
+  "contentOwner": "aem-dev-jp",
+  "contentRepo": "aio-edsbyom-conent",
+  "sourceBranch": "main",
+  "sourceCommit": "965ab984d50c076e6119a3caae9329e19fc51062",
+  "previewRunId": "mon2aw8d-76f0e108",
+  "previewCommitSha": "26c5bf2f815664f51c4320ea356d71ed6b4b3046",
+  "writeBackSha": "f586933c37a6b2d6854d3066aa9f9b7bc5b00c9d",
+  "pages": [
+    {
+      "mdPath": "nav.md",
+      "htmlPath": "nav.html",
+      "adminPath": "/nav",
+      "status": "published",
+      "adminResponse": {
+        "webPath": "/nav",
+        "resourcePath": "/nav.md",
+        "preview": {
+          "url": "https://main--aio-edsbyom-site--aem-dev-jp.aem.page/nav",
+          "status": 200,
+          "contentBusId": "helix-content-bus/b2e6f25199423f299e1ade8bae6a7267eb7095f4e7cff6e0698001265de/preview/nav.md",
+          "contentType": "text/plain; charset=utf-8",
+          "lastModified": "Fri, 01 May 2026 15:22:59 GMT",
+          "sourceLocation": "markup:https://285361-282cyanbass-stage.adobeioruntime.net/api/v1/web/282CyanBass/orchestrator/nav",
+          "sourceLastModified": "Fri, 01 May 2026 15:22:58 GMT",
+          "permissions": [
+            "delete",
+            "read",
+            "write"
+          ]
+        },
+        "links": {
+          "status": "https://admin.hlx.page/status/aem-dev-jp/aio-edsbyom-site/main/nav",
+          "preview": "https://admin.hlx.page/preview/aem-dev-jp/aio-edsbyom-site/main/nav",
+          "live": "https://admin.hlx.page/live/aem-dev-jp/aio-edsbyom-site/main/nav",
+          "code": "https://admin.hlx.page/code/aem-dev-jp/aio-edsbyom-site/main/nav"
+        }
+      },
+      "publishAdminResponse": {
+        "webPath": "/nav",
+        "resourcePath": "/nav.md",
+        "live": {
+          "url": "https://main--aio-edsbyom-site--aem-dev-jp.aem.live/nav",
+          "status": 200,
+          "contentBusId": "helix-content-bus/b2e6f25199423f299e1ade8bae6a7267eb7095f4e7cff6e0698001265de/live/nav.md",
+          "contentType": "text/plain; charset=utf-8",
+          "lastModified": "Fri, 01 May 2026 15:23:36 GMT",
+          "sourceLocation": "markup:https://285361-282cyanbass-stage.adobeioruntime.net/api/v1/web/282CyanBass/orchestrator/nav",
+          "sourceLastModified": "Fri, 01 May 2026 15:23:33 GMT",
+          "permissions": [
+            "delete",
+            "read",
+            "write"
+          ]
+        },
+        "links": {
+          "status": "https://admin.hlx.page/status/aem-dev-jp/aio-edsbyom-site/main/nav",
+          "preview": "https://admin.hlx.page/preview/aem-dev-jp/aio-edsbyom-site/main/nav",
+          "live": "https://admin.hlx.page/live/aem-dev-jp/aio-edsbyom-site/main/nav",
+          "code": "https://admin.hlx.page/code/aem-dev-jp/aio-edsbyom-site/main/nav"
+        }
+      }
+    },
+    {
+      "mdPath": "sub/test-new-docs.md",
+      "htmlPath": "sub/test-new-docs.html",
+      "adminPath": "/sub/test-new-docs",
+      "status": "published",
+      "adminResponse": {
+        "webPath": "/sub/test-new-docs",
+        "resourcePath": "/sub/test-new-docs.md",
+        "preview": {
+          "url": "https://main--aio-edsbyom-site--aem-dev-jp.aem.page/sub/test-new-docs",
+          "status": 200,
+          "contentBusId": "helix-content-bus/b2e6f25199423f299e1ade8bae6a7267eb7095f4e7cff6e0698001265de/preview/sub/test-new-docs.md",
+          "contentType": "text/plain; charset=utf-8",
+          "lastModified": "Fri, 01 May 2026 15:23:00 GMT",
+          "sourceLocation": "markup:https://285361-282cyanbass-stage.adobeioruntime.net/api/v1/web/282CyanBass/orchestrator/sub/test-new-docs",
+          "sourceLastModified": "Fri, 01 May 2026 15:22:59 GMT",
+          "permissions": [
+            "delete",
+            "read",
+            "write"
+          ]
+        },
+        "links": {
+          "status": "https://admin.hlx.page/status/aem-dev-jp/aio-edsbyom-site/main/sub/test-new-docs",
+          "preview": "https://admin.hlx.page/preview/aem-dev-jp/aio-edsbyom-site/main/sub/test-new-docs",
+          "live": "https://admin.hlx.page/live/aem-dev-jp/aio-edsbyom-site/main/sub/test-new-docs",
+          "code": "https://admin.hlx.page/code/aem-dev-jp/aio-edsbyom-site/main/sub/test-new-docs"
+        }
+      },
+      "publishAdminResponse": {
+        "webPath": "/sub/test-new-docs",
+        "resourcePath": "/sub/test-new-docs.md",
+        "live": {
+          "url": "https://main--aio-edsbyom-site--aem-dev-jp.aem.live/sub/test-new-docs",
+          "status": 200,
+          "contentBusId": "helix-content-bus/b2e6f25199423f299e1ade8bae6a7267eb7095f4e7cff6e0698001265de/live/sub/test-new-docs.md",
+          "contentType": "text/plain; charset=utf-8",
+          "lastModified": "Fri, 01 May 2026 15:23:37 GMT",
+          "sourceLocation": "markup:https://285361-282cyanbass-stage.adobeioruntime.net/api/v1/web/282CyanBass/orchestrator/sub/test-new-docs",
+          "sourceLastModified": "Fri, 01 May 2026 15:23:34 GMT",
+          "permissions": [
+            "delete",
+            "read",
+            "write"
+          ]
+        },
+        "links": {
+          "status": "https://admin.hlx.page/status/aem-dev-jp/aio-edsbyom-site/main/sub/test-new-docs",
+          "preview": "https://admin.hlx.page/preview/aem-dev-jp/aio-edsbyom-site/main/sub/test-new-docs",
+          "live": "https://admin.hlx.page/live/aem-dev-jp/aio-edsbyom-site/main/sub/test-new-docs",
+          "code": "https://admin.hlx.page/code/aem-dev-jp/aio-edsbyom-site/main/sub/test-new-docs"
+        }
+      }
+    }
+  ],
+  "pullRequest": {
+    "number": 5,
+    "headSha": "0cd47eab6558b0b8ec8ed18e78e0469f6dfcb43f",
+    "statusContext": "eds/preview"
+  },
+  "startedAt": "2026-05-01T15:23:30.982Z",
+  "completedAt": "2026-05-01T15:23:39.312Z"
+}
