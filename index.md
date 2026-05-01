@@ -1,6 +1,6 @@
-# Welcome
+# BYOMの世界へようこそ
 
-This is a sample content page for AEM Edge Delivery Services with BYOM. これは検証用の差分テキストです。さて、Publishしましょう。もいっかいテスト。
+Prod最終検証ですわよ。
 
 ## Getting Started
 

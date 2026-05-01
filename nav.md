@@ -1,4 +1,4 @@
-# Your Site Name
+# EDS BYOM Site
 
 ---
 
@@ -10,6 +10,6 @@
 
 - [Search](#search)
 
-| Metadata |
-| -------- |
-| Robots | noindex |
+| Metadata |         |
+| -------- | ------- |
+| Robots   | noindex |
