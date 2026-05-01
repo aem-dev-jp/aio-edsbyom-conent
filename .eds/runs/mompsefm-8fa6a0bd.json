@@ -1,0 +1,14 @@
+{
+  "runId": "mompsefm-8fa6a0bd",
+  "mode": "preview",
+  "status": "success",
+  "contentOwner": "aem-dev-jp",
+  "contentRepo": "aio-edsbyom-conent",
+  "sourceBranch": "stage",
+  "sourceCommit": "0deb4842e805cf8a627777797405a30cf97927b8",
+  "previewCommitSha": null,
+  "pages": [],
+  "startedAt": "2026-05-01T09:32:37.523Z",
+  "completedAt": "2026-05-01T09:32:37.824Z",
+  "pullRequest": null
+}
