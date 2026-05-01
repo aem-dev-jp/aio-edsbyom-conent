@@ -1,4 +1,4 @@
-# EDS BYOM Site
+# BYOM
 
 ---
 
