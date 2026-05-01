@@ -1,10 +1,6 @@
-# EDS BYOM Site
+# BYOM
 
 ---
-
-- [Home](/)
-- [About](/about)
-- [Contact](/contact)
 
 ---
 
